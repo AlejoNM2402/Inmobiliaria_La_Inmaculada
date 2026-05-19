@@ -57,17 +57,15 @@ function renderAdmin(lista) {
   }
 
   grid.innerHTML = lista.map((item, i) => {
-    const img    = item.imagenes?.[0] || '';
-    const precio = item.precio ? '$' + Number(item.precio).toLocaleString('es-CO') : 'Consultar';
-
-    // Construir ubicación legible
+    const img       = item.imagenes?.[0] || '';
+    const precio    = item.precio ? '$' + Number(item.precio).toLocaleString('es-CO') : 'Consultar';
     const ubicacion = [item.barrio, item.zona].filter(Boolean).join(', ');
 
     const chips = [
-      item.habitaciones ? `<span class="chip"><i class="fas fa-bed"></i> ${item.habitaciones}</span>` : '',
-      item.baños         ? `<span class="chip"><i class="fas fa-bath"></i> ${item.baños}</span>` : '',
+      item.habitaciones ? `<span class="chip"><i class="fas fa-bed"></i> ${item.habitaciones}</span>`          : '',
+      item.baños         ? `<span class="chip"><i class="fas fa-bath"></i> ${item.baños}</span>`                : '',
       item.metraje       ? `<span class="chip"><i class="fas fa-ruler-combined"></i> ${item.metraje}m²</span>` : '',
-      item.estrato       ? `<span class="chip">E${item.estrato}</span>` : '',
+      item.estrato       ? `<span class="chip">E${item.estrato}</span>`                                          : '',
       ubicacion          ? `<span class="chip"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(ubicacion)}</span>` : '',
     ].filter(Boolean).join('');
 
@@ -117,6 +115,8 @@ window.cerrarModal = () => {
   document.body.style.overflow = '';
   currentImages  = [];
   uploadingCount = 0;
+  // Ocultar campo admin al cerrar
+  document.getElementById('adminValueWrap')?.classList.remove('visible');
   renderPreviews();
 };
 
@@ -193,22 +193,27 @@ window.submitForm = async () => {
     return;
   }
 
+  const pagaAdmin = document.getElementById('paga_administracion').checked;
+
   const obj = {
     titulo,
-    descripcion:         document.getElementById('descripcion').value,
-    precio:              parseFloat(document.getElementById('precio').value)    || 0,
-    estrato:             parseInt(document.getElementById('estrato').value)      || 0,
-    habitaciones:        parseInt(document.getElementById('habitaciones').value) || 0,
-    baños:               parseInt(document.getElementById('baños').value)        || 0,
-    metraje:             parseFloat(document.getElementById('metraje').value)   || 0,
-    tipo_inmueble:       document.getElementById('tipo_inmueble').value,
-    imagenes:            currentImages,
-    conjunto_cerrado:    document.getElementById('conjunto_cerrado').checked,
-    seguridad_privada:   document.getElementById('seguridad_privada').checked,
-    parqueadero:         document.getElementById('parqueadero').checked,
-    paga_administracion: document.getElementById('paga_administracion').checked,
-    // Ubicación por zona y barrio (reemplaza lat/lng)
-    zona:   document.getElementById('zona').value   || null,
+    descripcion:          document.getElementById('descripcion').value,
+    precio:               parseFloat(document.getElementById('precio').value)    || 0,
+    estrato:              parseInt(document.getElementById('estrato').value)       || 0,
+    habitaciones:         parseInt(document.getElementById('habitaciones').value)  || 0,
+    baños:                parseInt(document.getElementById('baños').value)         || 0,
+    metraje:              parseFloat(document.getElementById('metraje').value)    || 0,
+    tipo_inmueble:        document.getElementById('tipo_inmueble').value,
+    imagenes:             currentImages,
+    conjunto_cerrado:     document.getElementById('conjunto_cerrado').checked,
+    seguridad_privada:    document.getElementById('seguridad_privada').checked,
+    parqueadero:          document.getElementById('parqueadero').checked,
+    paga_administracion:  pagaAdmin,
+    // Solo guardamos el valor si el checkbox está activo
+    valor_administracion: pagaAdmin
+      ? (parseFloat(document.getElementById('valor_administracion').value) || null)
+      : null,
+    zona:   document.getElementById('zona').value        || null,
     barrio: document.getElementById('barrio').value.trim() || null,
   };
 
@@ -248,10 +253,21 @@ window.editItem = async (id) => {
   document.getElementById('zona').value          = data.zona          || '';
   document.getElementById('barrio').value        = data.barrio        || '';
 
-  document.getElementById('conjunto_cerrado').checked    = !!data.conjunto_cerrado;
-  document.getElementById('seguridad_privada').checked   = !!data.seguridad_privada;
-  document.getElementById('parqueadero').checked          = !!data.parqueadero;
-  document.getElementById('paga_administracion').checked  = !!data.paga_administracion;
+  document.getElementById('conjunto_cerrado').checked   = !!data.conjunto_cerrado;
+  document.getElementById('seguridad_privada').checked  = !!data.seguridad_privada;
+  document.getElementById('parqueadero').checked         = !!data.parqueadero;
+
+  // Administración: checkbox + valor
+  const pagaAdmin = !!data.paga_administracion;
+  document.getElementById('paga_administracion').checked = pagaAdmin;
+  const wrap = document.getElementById('adminValueWrap');
+  if (pagaAdmin) {
+    wrap?.classList.add('visible');
+    document.getElementById('valor_administracion').value = data.valor_administracion || '';
+  } else {
+    wrap?.classList.remove('visible');
+    document.getElementById('valor_administracion').value = '';
+  }
 
   currentImages = Array.isArray(data.imagenes) ? [...data.imagenes] : [];
   renderPreviews();

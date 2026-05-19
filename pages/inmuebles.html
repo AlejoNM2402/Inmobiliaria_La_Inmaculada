@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Inmuebles | Inmobiliaria Inmaculada</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/inmuebles.css">
+</head>
+<body>
+
+  <!-- ══ NAV ══════════════════════════════════════════ -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../assets/logo.jpeg" alt="Logo">
+        <span>Angelica Moncada</span>
+      </a>
+      <a href="../index.html" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Volver al inicio
+      </a>
+    </div>
+  </nav>
+
+  <!-- ══ HEADER DE PÁGINA ══════════════════════════════ -->
+  <header class="page-header">
+    <div class="header-inner">
+      <p class="header-eyebrow">Catálogo completo</p>
+      <h1>Todos los <em>inmuebles</em></h1>
+      <p class="header-sub">Encuentra la propiedad ideal con nuestros filtros de búsqueda</p>
+    </div>
+  </header>
+
+  <!-- ══ LAYOUT PRINCIPAL ══════════════════════════════ -->
+  <div class="catalog-layout">
+
+    <!-- SIDEBAR DE FILTROS -->
+    <aside class="filters-panel" id="filtersPanel">
+
+      <div class="filters-header">
+        <span><i class="fas fa-sliders-h"></i> Filtros</span>
+        <button class="btn-clear-all" id="btnClearAll" onclick="clearAllFilters()">
+          Limpiar todo
+        </button>
+      </div>
+
+      <!-- Búsqueda por texto -->
+      <div class="filter-group">
+        <label class="filter-label">Buscar</label>
+        <div class="search-wrap">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            id="filterSearch"
+            placeholder="Barrio, título, zona..."
+            oninput="applyFilters()"
+          >
+          <button class="clear-input" id="clearSearch" onclick="clearSearch()" style="display:none">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tipo de inmueble -->
+      <div class="filter-group">
+        <label class="filter-label">Tipo de inmueble</label>
+        <div class="chip-group" id="filterTipo">
+          <button class="filter-chip active" data-value="">Todos</button>
+          <button class="filter-chip" data-value="Apartamento">Apartamento</button>
+          <button class="filter-chip" data-value="Casa">Casa</button>
+          <button class="filter-chip" data-value="Finca">Finca</button>
+          <button class="filter-chip" data-value="Lote">Lote</button>
+          <button class="filter-chip" data-value="Local">Local</button>
+        </div>
+      </div>
+
+      <!-- Zona / Municipio -->
+      <div class="filter-group">
+        <label class="filter-label">Municipio</label>
+        <div class="chip-group" id="filterZona">
+          <button class="filter-chip active" data-value="">Todos</button>
+          <button class="filter-chip" data-value="Bucaramanga">Bucaramanga</button>
+          <button class="filter-chip" data-value="Floridablanca">Floridablanca</button>
+          <button class="filter-chip" data-value="Girón">Girón</button>
+          <button class="filter-chip" data-value="Piedecuesta">Piedecuesta</button>
+        </div>
+      </div>
+
+      <!-- Rango de precio -->
+      <div class="filter-group">
+        <label class="filter-label">
+          Precio
+          <span class="price-display" id="priceDisplay">Cualquiera</span>
+        </label>
+        <div class="price-inputs">
+          <div class="price-field">
+            <span>Mín</span>
+            <input type="number" id="filterPrecioMin" placeholder="0" oninput="applyFilters()">
+          </div>
+          <div class="price-sep">—</div>
+          <div class="price-field">
+            <span>Máx</span>
+            <input type="number" id="filterPrecioMax" placeholder="Sin límite" oninput="applyFilters()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Habitaciones -->
+      <div class="filter-group">
+        <label class="filter-label">Habitaciones mínimas</label>
+        <div class="chip-group" id="filterHabs">
+          <button class="filter-chip active" data-value="0">Cualquiera</button>
+          <button class="filter-chip" data-value="1">1+</button>
+          <button class="filter-chip" data-value="2">2+</button>
+          <button class="filter-chip" data-value="3">3+</button>
+          <button class="filter-chip" data-value="4">4+</button>
+        </div>
+      </div>
+
+      <!-- Estrato -->
+      <div class="filter-group">
+        <label class="filter-label">Estrato</label>
+        <div class="chip-group" id="filterEstrato">
+          <button class="filter-chip active" data-value="0">Todos</button>
+          <button class="filter-chip" data-value="1">1</button>
+          <button class="filter-chip" data-value="2">2</button>
+          <button class="filter-chip" data-value="3">3</button>
+          <button class="filter-chip" data-value="4">4</button>
+          <button class="filter-chip" data-value="5">5</button>
+          <button class="filter-chip" data-value="6">6</button>
+        </div>
+      </div>
+
+      <!-- Características -->
+      <div class="filter-group">
+        <label class="filter-label">Características</label>
+        <div class="check-filters">
+          <label class="check-filter-item">
+            <input type="checkbox" id="filterParqueadero" onchange="applyFilters()">
+            <span><i class="fas fa-car"></i> Parqueadero</span>
+          </label>
+          <label class="check-filter-item">
+            <input type="checkbox" id="filterConjunto" onchange="applyFilters()">
+            <span><i class="fas fa-shield-alt"></i> Conjunto cerrado</span>
+          </label>
+          <label class="check-filter-item">
+            <input type="checkbox" id="filterSeguridad" onchange="applyFilters()">
+            <span><i class="fas fa-user-shield"></i> Seguridad 24/7</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Ordenar por -->
+      <div class="filter-group">
+        <label class="filter-label">Ordenar por</label>
+        <select id="filterOrder" onchange="applyFilters()" class="select-filter">
+          <option value="newest">Más recientes</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="area-desc">Mayor área</option>
+        </select>
+      </div>
+
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="catalog-main">
+
+      <!-- Barra de resultados + toggle móvil -->
+      <div class="results-bar">
+        <div class="results-info">
+          <span id="resultsCount">Cargando...</span>
+        </div>
+        <button class="btn-toggle-filters" id="btnToggleFilters" onclick="toggleFilters()">
+          <i class="fas fa-sliders-h"></i> Filtros
+          <span class="filter-badge" id="filterBadge" style="display:none">0</span>
+        </button>
+      </div>
+
+      <!-- Grid de resultados -->
+      <div id="catalogGrid" class="catalog-grid">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando propiedades...</p>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div id="emptyState" class="empty-state" style="display:none">
+        <i class="fas fa-search"></i>
+        <h3>Sin resultados</h3>
+        <p>No hay inmuebles que coincidan con los filtros seleccionados.</p>
+        <button class="btn-reset" onclick="clearAllFilters()">
+          <i class="fas fa-undo"></i> Limpiar filtros
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ MODAL DETALLE ═════════════════════════════════ -->
+  <dialog id="modalInmueble" class="dialog-lux">
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <!-- ══ OVERLAY MÓVIL PARA CERRAR FILTROS ════════════ -->
+  <div class="filters-overlay" id="filtersOverlay" onclick="toggleFilters()"></div>
+
+  <!-- Botón flotante WhatsApp -->
+  <a href="https://wa.me/573156376306" target="_blank" class="fab-wpp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/inmuebles.js"></script>
+
+</body>
+</html>

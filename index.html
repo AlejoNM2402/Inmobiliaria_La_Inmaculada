@@ -1,111 +1,222 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inmobiliaria Inmaculada | Encuentra tu hogar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/home.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inmobiliaria Inmaculada | Bucaramanga</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 
-    <nav class="main-nav">
-        <div class="nav-container">
-            <div class="logo">
-                <img src="assets/logo.jpeg" alt=" Logo">
-                <span>Angelica Moncada Inmobiliaria</span>
-            </div>
-            <div class="nav-links">
-                <a href="#catalogo">Inmuebles</a>
-                <a href="#nosotros">Quiénes Somos</a>
-                <a href="#servicios">Servicios</a>
-            </div>
-            <div class="nav-actions">
-                <a href="pages/login.html" class="admin-lock"><i class="fas fa-lock"></i></a>
-            </div>
-        </div>
-    </nav>
+  <!-- ══ NAV ══════════════════════════════════════════ -->
+  <nav class="main-nav" id="mainNav">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="assets/logo.jpeg" alt="Logo">
+        <span>Angelica Moncada</span>
+      </div>
+      <div class="nav-links">
+        <a href="#inmuebles">Inmuebles</a>
+        <a href="#nosotros">Quiénes Somos</a>
+        <a href="#servicios">Servicios</a>
+      </div>
+      <div class="nav-actions">
+        <a href="pages/login.html" class="admin-lock" title="Acceso admin">
+          <i class="fas fa-lock"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
 
-    <section id="catalogo" class="section-padding">
-        <div class="container">
-            <div class="section-title">
-                <span class="badge">Propiedades</span>
-                <h1>Catálogo de Inmuebles</h1>
-                <p>Las mejores oportunidades en el área metropolitana de Bucaramanga</p>
-            </div>
-            
-            <div id="catalogoInmuebles" class="properties-grid">
-                <div class="loading-state">
-                    <i class="fas fa-circle-notch fa-spin"></i>
-                    <p>Buscando las mejores casas para ti...</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- ══ DOTS LATERALES ════════════════════════════════ -->
+  <nav class="dot-nav" id="dotNav">
+    <a href="#inmuebles" class="dot" data-label="Inmuebles"></a>
+    <a href="#nosotros"  class="dot" data-label="Quiénes Somos"></a>
+    <a href="#servicios" class="dot" data-label="Servicios"></a>
+  </nav>
 
-    <section id="nosotros" class="section-padding bg-light">
-        <div class="container about-flex">
-            <div class="about-content">
-                <span class="badge">Nuestra Historia</span>
-                <h2>Experiencia y Confianza</h2>
-                <p>Somos un equipo comprometido con la transparencia y la excelencia en el sector inmobiliario de Santander. Nos especializamos en conectar sueños con espacios reales en Bucaramanga, Floridablanca y Girón.</p>
-                
-                <div class="stats-mini">
-                    <div class="stat"><strong>+10</strong><span>Años</span></div>
-                    <div class="stat"><strong>+500</strong><span>Clientes</span></div>
-                </div>
+  <!-- ══ HERO — parallax edificios noche ═══════════════ -->
+  <section class="hero parallax-section" id="hero">
+    <div class="parallax-bg" id="heroBg"></div>
+    <div class="parallax-overlay"></div>
 
-                <button class="btn-primary">Saber más de nosotros</button>
-            </div>
-            <div class="about-video">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/TU_ID_AQUI" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="hero-content">
+      <p class="hero-eyebrow reveal-up">Bucaramanga · Floridablanca · Girón</p>
+      <h1 class="hero-title reveal-up delay-1">
+        Tu próximo hogar<br><em>te está esperando</em>
+      </h1>
+      <p class="hero-sub reveal-up delay-2">
+        Más de 10 años conectando familias con sus espacios ideales<br>
+        en el área metropolitana de Santander.
+      </p>
+      <div class="hero-cta reveal-up delay-3">
+        <a href="#inmuebles" class="btn-hero">
+          <i class="fas fa-search"></i> Ver propiedades
+        </a>
+        <a href="https://wa.me/573156376306" target="_blank" class="btn-hero-ghost">
+          <i class="fab fa-whatsapp"></i> Hablar con asesora
+        </a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint"><span></span></div>
+  </section>
 
-    <section id="servicios" class="section-padding">
-        <div class="container">
-            <div class="section-title">
-                <span class="badge">Servicios</span>
-                <h2>¿Cómo podemos ayudarte?</h2>
-            </div>
-            <div class="services-grid">
-                <div class="s-card">
-                    <div class="icon-box"><i class="fas fa-hand-holding-usd"></i></div>
-                    <h3>Ventas</h3>
-                    <p>Vendemos tu propiedad en tiempo récord con la mejor valoración del mercado.</p>
-                </div>
-                <div class="s-card">
-                    <div class="icon-box"><i class="fas fa-key"></i></div>
-                    <h3>Arriendos</h3>
-                    <p>Administramos tu inmueble con pólizas de arrendamiento para tu tranquilidad.</p>
-                </div>
-                <div class="s-card">
-                    <div class="icon-box"><i class="fas fa-file-contract"></i></div>
-                    <h3>Avalúos</h3>
-                    <p>Certificados técnicos y comerciales para conocer el valor real de tu vivienda.</p>
-                </div>
-            </div>
+  <!-- ══ STATS ════════════════════════════════════════ -->
+  <section class="stats-section">
+    <div class="stats-inner">
+      <div class="stat-card reveal-up">
+        <div class="counter-row">
+          <span class="counter" data-target="10">0</span>
+          <span class="stat-plus">+</span>
         </div>
-    </section>
+        <p>Años de experiencia</p>
+      </div>
+      <div class="stat-card reveal-up delay-1">
+        <div class="counter-row">
+          <span class="counter" data-target="500">0</span>
+          <span class="stat-plus">+</span>
+        </div>
+        <p>Clientes satisfechos</p>
+      </div>
+      <div class="stat-card reveal-up delay-2">
+        <div class="counter-row">
+          <span class="counter" data-target="98">0</span>
+          <span class="stat-plus">%</span>
+        </div>
+        <p>Tasa de satisfacción</p>
+      </div>
+      <div class="stat-card reveal-up delay-3">
+        <div class="counter-row">
+          <span class="counter" data-target="3">0</span>
+          <span class="stat-plus"></span>
+        </div>
+        <p>Municipios atendidos</p>
+      </div>
+    </div>
+  </section>
 
-    <footer>
-        
-        <div class="container">
-            <p>&copy; 2026 Inmobiliaria Inmaculada - Bucaramanga, Colombia</p>
-        </div>
-    </footer>
- 
-<dialog id="modalInmueble" class="dialog-lux">
-    <div id="dialogContent">
-        </div>
-</dialog>
+  <!-- ══ INMUEBLES ════════════════════════════════════ -->
+  <section id="inmuebles" class="section-padding section-inmuebles">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="eyebrow">Propiedades</span>
+        <h2>Inmuebles <em>destacados</em></h2>
+        <p>Una selección de las mejores oportunidades disponibles ahora mismo</p>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/home.js"></script>
+      <div id="featuredGrid" class="properties-grid"></div>
+
+      <div id="loadingState" class="loading-state">
+        <div class="spinner-hero"></div>
+        <p>Buscando las mejores propiedades...</p>
+      </div>
+
+      <div class="ver-mas-wrap reveal-up" id="verMasWrap" style="display:none">
+        <a href="pages/inmuebles.html" class="btn-ver-mas">
+          <i class="fas fa-th-large"></i> Ver todos los inmuebles
+        </a>
+        <p class="ver-mas-hint">Filtra por tipo, zona, precio y más</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DIVISOR PARALLAX — interior elegante ══════════ -->
+  <div class="parallax-section parallax-divider" id="dividerBgSection">
+    <div class="parallax-bg" id="dividerBg"></div>
+    <div class="parallax-overlay"></div>
+    <div class="parallax-divider-content reveal-up">
+      <h3>Encontramos el espacio<br><em style="font-style:italic;color:var(--blue-pale)">perfecto para ti</em></h3>
+      <p>Asesoría personalizada, transparencia y resultados reales</p>
+      <a href="https://wa.me/573156376306" target="_blank" class="btn-hero" style="font-size:13px;padding:11px 24px">
+        <i class="fab fa-whatsapp"></i> Solicitar asesoría gratuita
+      </a>
+    </div>
+  </div>
+
+  <!-- ══ QUIÉNES SOMOS — parallax ciudad ═══════════════ -->
+  <section id="nosotros" class="section-padding section-about parallax-section">
+    <div class="parallax-bg" id="nosotrosBg"></div>
+    <div class="parallax-overlay"></div>
+    <div class="container about-flex">
+      <div class="about-content reveal-left">
+        <span class="eyebrow">Nuestra historia</span>
+        <h2>Experiencia y<br><em>Confianza</em></h2>
+        <p>Somos un equipo comprometido con la transparencia y la excelencia en el sector inmobiliario de Santander. Nos especializamos en conectar sueños con espacios reales en Bucaramanga, Floridablanca y Girón.</p>
+        <p>Con más de una década de trayectoria, conocemos el mercado local como nadie y te acompañamos en cada paso del proceso.</p>
+        <a href="https://wa.me/573156376306" target="_blank" class="btn-primary-outline">
+          <i class="fab fa-whatsapp"></i> Contáctanos hoy
+        </a>
+      </div>
+      <div class="about-video reveal-right">
+        <div class="video-wrapper">
+          <iframe
+            src="https://www.youtube.com/embed/TU_ID_AQUI"
+            title="Video inmobiliaria"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SERVICIOS — parallax skyline ═════════════════ -->
+  <section id="servicios" class="section-padding section-services parallax-section">
+    <div class="parallax-bg" id="serviciosBg"></div>
+    <div class="parallax-overlay"></div>
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="eyebrow">Lo que hacemos</span>
+        <h2>Nuestros <em>servicios</em></h2>
+        <p>Todo lo que necesitas para comprar, vender o arrendar tu propiedad</p>
+      </div>
+      <div class="services-grid">
+        <div class="s-card reveal-up delay-1">
+          <div class="s-icon"><i class="fas fa-hand-holding-usd"></i></div>
+          <h3>Ventas</h3>
+          <p>Vendemos tu propiedad en el menor tiempo posible con la mejor valoración del mercado local.</p>
+        </div>
+        <div class="s-card reveal-up delay-2">
+          <div class="s-icon"><i class="fas fa-key"></i></div>
+          <h3>Arriendos</h3>
+          <p>Administramos tu inmueble con pólizas de arrendamiento para darte total tranquilidad.</p>
+        </div>
+        <div class="s-card reveal-up delay-3">
+          <div class="s-icon"><i class="fas fa-file-contract"></i></div>
+          <h3>Avalúos</h3>
+          <p>Certificados técnicos y comerciales para conocer el valor real de tu vivienda o local.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-brand">
+        <img src="assets/logo.jpeg" alt="Logo" style="height:34px;border-radius:8px">
+        <span>Angelica Moncada Inmobiliaria</span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Inmobiliaria Inmaculada · Bucaramanga, Colombia</p>
+      <a href="https://wa.me/573156376306" target="_blank" class="footer-wpp">
+        <i class="fab fa-whatsapp"></i> +57 315 637 6306
+      </a>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/573156376306" target="_blank" class="fab-wpp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <dialog id="modalInmueble" class="dialog-lux">
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>

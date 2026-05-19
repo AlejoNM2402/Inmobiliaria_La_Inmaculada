@@ -6,6 +6,22 @@
   <title>Admin | Inmobiliaria Inmaculada</title>
   <link rel="stylesheet" href="../css/admin.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Campo administración: oculto por defecto, anima al aparecer */
+    .admin-value-wrap {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .35s ease, opacity .3s ease, margin .3s ease;
+      margin-top: 0;
+    }
+    .admin-value-wrap.visible {
+      max-height: 100px;
+      opacity: 1;
+      margin-top: 12px;
+    }
+  </style>
 </head>
 <body>
 
@@ -170,14 +186,24 @@
                 <input type="checkbox" id="parqueadero">
                 <span><i class="fas fa-car"></i> Parqueadero</span>
               </label>
-              <label class="check-item">
-                <input type="checkbox" id="paga_administracion">
-                <span><i class="fas fa-file-invoice-dollar"></i> Paga admón</span>
-              </label>
+              <!-- Checkbox administración + campo de valor anidado -->
+              <div>
+                <label class="check-item">
+                  <input type="checkbox" id="paga_administracion" onchange="toggleAdminValue(this)">
+                  <span><i class="fas fa-file-invoice-dollar"></i> Paga admón</span>
+                </label>
+                <!-- Campo que aparece al marcar el checkbox -->
+                <div class="admin-value-wrap" id="adminValueWrap">
+                  <div class="field" style="margin-bottom:0">
+                    <label>Valor mensual de administración (COP)</label>
+                    <input type="number" id="valor_administracion" placeholder="Ej: 150000">
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- UBICACIÓN — zona y barrio (reemplaza lat/lng) -->
+          <!-- Ubicación -->
           <div class="form-section">
             <div class="form-section-title"><i class="fas fa-map-pin"></i> Ubicación</div>
             <div class="form-grid">
@@ -239,6 +265,16 @@
   <script src="../js/admin.js"></script>
 
   <script>
+    // Mostrar/ocultar campo valor administración
+    function toggleAdminValue(checkbox) {
+      const wrap = document.getElementById('adminValueWrap');
+      wrap.classList.toggle('visible', checkbox.checked);
+      if (!checkbox.checked) {
+        document.getElementById('valor_administracion').value = '';
+      }
+    }
+
+    // Botón desktop
     if (window.innerWidth >= 769) document.getElementById('btnDesktop').style.display = 'inline-flex';
     window.addEventListener('resize', () => {
       document.getElementById('btnDesktop').style.display =
