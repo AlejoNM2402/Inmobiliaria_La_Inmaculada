@@ -23,6 +23,8 @@ async function loadInmuebles() {
     return;
   }
 
+
+  
   allData = data || [];
   initChipGroups();
   applyFilters();
@@ -200,28 +202,78 @@ window.verDetalle = async (id) => {
     || 'Bucaramanga, Santander';
 
   const miniaturas = fotos.length > 1
-    ? fotos.map(f => `
+    ? fotos.map((f, idx) => `
         <img src="${f}"
-             class="thumb"
+             class="thumb ${idx === 0 ? 'thumb-active' : ''}"
              loading="lazy"
-             alt="foto"
+             alt="foto ${idx + 1}"
              onclick="cambiarImg('${f}')">`).join('')
     : '';
 
-  const specs = [
-    item.habitaciones ? `<div class="spec-item"><i class="fas fa-bed"></i><strong>${item.habitaciones}</strong><small>Habitaciones</small></div>`   : '',
-    item.baños         ? `<div class="spec-item"><i class="fas fa-bath"></i><strong>${item.baños}</strong><small>Baños</small></div>`                 : '',
-    item.metraje       ? `<div class="spec-item"><i class="fas fa-ruler-combined"></i><strong>${item.metraje}m²</strong><small>Área</small></div>`   : '',
-    item.estrato       ? `<div class="spec-item"><i class="fas fa-layer-group"></i><strong>${item.estrato}</strong><small>Estrato</small></div>`      : '',
-  ].filter(Boolean).join('');
+  // ✅ CARACTERÍSTICAS PRINCIPALES
+  const specsHTML = `
+    <div class="specs-grid-full">
+      ${item.habitaciones ? `
+      <div class="spec-item">
+        <i class="fas fa-bed"></i>
+        <strong>${item.habitaciones}</strong>
+        <small>Habitaciones</small>
+      </div>` : ''}
+      ${item.baños ? `
+      <div class="spec-item">
+        <i class="fas fa-bath"></i>
+        <strong>${item.baños}</strong>
+        <small>Baños</small>
+      </div>` : ''}
+      ${item.metraje ? `
+      <div class="spec-item">
+        <i class="fas fa-ruler-combined"></i>
+        <strong>${item.metraje}m²</strong>
+        <small>Área</small>
+      </div>` : ''}
+      ${item.estrato ? `
+      <div class="spec-item">
+        <i class="fas fa-layer-group"></i>
+        <strong>${item.estrato}</strong>
+        <small>Estrato</small>
+      </div>` : ''}
+    </div>
+  `;
 
-  const extras = [
-    item.conjunto_cerrado    ? '<span class="tag-extra"><i class="fas fa-shield-alt"></i> Conjunto cerrado</span>'     : '',
-    item.seguridad_privada   ? '<span class="tag-extra"><i class="fas fa-user-shield"></i> Seguridad 24/7</span>'      : '',
-    item.parqueadero         ? '<span class="tag-extra"><i class="fas fa-car"></i> Parqueadero</span>'                  : '',
-    item.paga_administracion ? '<span class="tag-extra"><i class="fas fa-file-invoice-dollar"></i> Paga admón</span>'  : '',
-  ].filter(Boolean).join('');
+  // ✅ INFORMACIÓN ADICIONAL
+  const infoRowsHTML = `
+    <div class="extra-info">
+      <div class="info-row">
+        <span>Tipo de inmueble</span>
+        <strong>${item.tipo_inmueble || 'No especificado'}</strong>
+      </div>
+      ${item.paga_administracion ? `
+      <div class="info-row">
+        <span><i class="fas fa-file-invoice-dollar" style="color:var(--blue);margin-right:5px"></i>Administración</span>
+        <strong>${item.valor_administracion ? '$' + Number(item.valor_administracion).toLocaleString('es-CO') : 'Incluida'}</strong>
+      </div>` : ''}
+    </div>
+  `;
 
+  // ✅ EXTRAS Y COMODIDADES
+  const extrasHTML = `
+    <div class="tags-extras">
+      ${item.conjunto_cerrado ? `
+      <span class="tag-extra">
+        <i class="fas fa-shield-alt"></i> Conjunto cerrado
+      </span>` : ''}
+      ${item.seguridad_privada ? `
+      <span class="tag-extra">
+        <i class="fas fa-user-shield"></i> Seguridad 24/7
+      </span>` : ''}
+      ${item.parqueadero ? `
+      <span class="tag-extra">
+        <i class="fas fa-car"></i> Parqueadero
+      </span>` : ''}
+    </div>
+  `;
+
+  // ✅ HTML COMPLETO DEL MODAL
   container.innerHTML = `
     <div class="dialog-container">
       <button class="btn-cerrar" onclick="document.getElementById('modalInmueble').close()">✕</button>
@@ -231,8 +283,8 @@ window.verDetalle = async (id) => {
         <div class="dialog-gallery">
           ${imgPrin
             ? `<img src="${imgPrin}" id="imgPrincipal" class="main-img" alt="${escapeHtml(item.titulo)}">`
-            : `<div style="height:330px;display:flex;align-items:center;justify-content:center;color:#475569;background:#0f172a">
-                 <i class="fas fa-image" style="font-size:48px"></i>
+            : `<div class="no-img-placeholder">
+                 <i class="fas fa-image"></i>
                </div>`
           }
           ${miniaturas ? `<div class="thumb-list">${miniaturas}</div>` : ''}
@@ -244,21 +296,16 @@ window.verDetalle = async (id) => {
           <p class="location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(ubicacion)}</p>
           <p class="price">$${Number(item.precio || 0).toLocaleString('es-CO')}</p>
 
-          ${specs ? `<div class="specs-grid-full">${specs}</div>` : ''}
+          ${specsHTML}
 
-          <div class="extra-info">
-            <div class="info-row">
-              <span>Tipo de inmueble</span>
-              <strong>${item.tipo_inmueble || 'No especificado'}</strong>
-            </div>
-          </div>
+          ${infoRowsHTML}
 
-          ${extras ? `<div class="tags-extras">${extras}</div>` : ''}
+          ${extrasHTML}
 
           ${item.descripcion ? `
           <div class="desc-box">
             <h3>Descripción</h3>
-            <p>${item.descripcion}</p>
+            <p>${escapeHtml(item.descripcion)}</p>
           </div>` : ''}
 
           <a href="https://wa.me/573156376306?text=Hola,%20solicito%20información%20sobre:%20${encodeURIComponent(item.titulo)}%20en%20${encodeURIComponent(ubicacion)}"
@@ -273,6 +320,28 @@ window.verDetalle = async (id) => {
 
   dialog.showModal();
 };
+
+// ✅ Función para cambiar imagen principal
+window.cambiarImg = (src) => {
+  const img = document.getElementById('imgPrincipal');
+  if (!img) return;
+  img.style.opacity = '0';
+  setTimeout(() => { 
+    img.src = src; 
+    img.style.opacity = '1'; 
+  }, 180);
+  
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('thumb-active'));
+  event.target.classList.add('thumb-active');
+};
+
+// ✅ Función para escapar HTML (si no la tienes)
+function escapeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
 
 // Cambiar imagen principal en el modal
 window.cambiarImg = (src) => {
@@ -381,3 +450,6 @@ function escapeHtml(str) {
   if (!str) return '';
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+//LISTENERS
+

@@ -13,7 +13,47 @@ const PARALLAX_IMGS = {
   serviciosBg: 'https://images.unsplash.com/photo-1494522855154-9297ac14b55f?auto=format&fit=crop&w=1920&q=80',
 };
 
+// ✅ REFERENCIAS PARA CLEANUP
+let cleanupFunctions = [];
+let parallaxInitialized = false;
+let scrollListener = null;
+let parallaxFrame = null;
+
+// ══════════════════════════════════════════════════
+//  LIMPIEZA DE RECURSOS
+// ══════════════════════════════════════════════════
+function cleanupHome() {
+  // Remover scroll listeners
+  if (scrollListener) {
+    window.removeEventListener('scroll', scrollListener);
+    scrollListener = null;
+  }
+  
+  // Cancelar animaciones de parallax
+  if (parallaxFrame) {
+    cancelAnimationFrame(parallaxFrame);
+    parallaxFrame = null;
+  }
+  
+  // Ejecutar funciones de cleanup guardadas
+  cleanupFunctions.forEach(fn => {
+    if (typeof fn === 'function') fn();
+  });
+  cleanupFunctions = [];
+  
+  // Cerrar dialogs
+  document.querySelectorAll('dialog[open]').forEach(dialog => dialog.close());
+  
+  parallaxInitialized = false;
+}
+
+// ══════════════════════════════════════════════════
+//  INICIALIZACIÓN
+// ══════════════════════════════════════════════════
 window.onload = async () => {
+  // Limpiar recursos previos si existen
+  cleanupHome();
+  
   initParallax();
   await loadFeatured();
   initScrollAnimations();
@@ -22,10 +62,15 @@ window.onload = async () => {
   initDotNav();
 };
 
+// Limpiar al salir de la página
+window.addEventListener('beforeunload', cleanupHome);
+
 // ══════════════════════════════════════════════════
-//  PARALLAX ENGINE
+//  PARALLAX ENGINE (optimizado)
 // ══════════════════════════════════════════════════
 function initParallax() {
+  if (parallaxInitialized) return; // ✅ Evita duplicación
+  
   // Asignar imagen de fondo a cada .parallax-bg
   Object.entries(PARALLAX_IMGS).forEach(([id, url]) => {
     const el = document.getElementById(id);
@@ -38,6 +83,8 @@ function initParallax() {
     section: bg.closest('.parallax-section'),
   })).filter(l => l.section);
 
+  if (layers.length === 0) return;
+
   function updateParallax() {
     const scrollY = window.scrollY;
 
@@ -49,28 +96,32 @@ function initParallax() {
       // Solo calcular si la sección está cerca del viewport
       if (rect.bottom < -100 || rect.top > window.innerHeight + 100) return;
 
-      // Cuánto ha avanzado el scroll dentro de la sección (0 = entra, 1 = sale)
+      // Cuánto ha avanzado el scroll dentro de la sección
       const progress = (scrollY - top + window.innerHeight) / (height + window.innerHeight);
-      // Desplazamiento: máximo ±12% de la altura del bg
       const offset   = (progress - 0.5) * -12;
 
       bg.style.transform = `translateY(${offset}%)`;
     });
+
+    parallaxFrame = null;
   }
 
-  // RAF para suavidad
+  // ✅ Scroll listener optimizado
   let ticking = false;
-  window.addEventListener('scroll', () => {
+  scrollListener = () => {
     if (!ticking) {
-      requestAnimationFrame(() => {
+      parallaxFrame = requestAnimationFrame(() => {
         updateParallax();
         ticking = false;
       });
       ticking = true;
     }
-  }, { passive: true });
+  };
 
+  window.addEventListener('scroll', scrollListener, { passive: true });
   updateParallax(); // llamada inicial
+  
+  parallaxInitialized = true;
 }
 
 // ══════════════════════════════════════════════════
@@ -162,8 +213,6 @@ window.verPreview = async (id) => {
     return;
   }
 
-  console.log('Datos del inmueble:', data); // Debug
-
   const dialog    = document.getElementById('modalInmueble');
   const container = document.getElementById('dialogContent');
 
@@ -171,7 +220,6 @@ window.verPreview = async (id) => {
   const imgPrin   = fotos[0] || '';
   const ubicacion = [data.barrio, data.zona].filter(Boolean).join(', ') || 'Bucaramanga, Santander';
 
-  // Miniaturas
   const miniaturas = fotos.length > 1
     ? fotos.map((f, idx) => `
         <img src="${f}"
@@ -180,7 +228,6 @@ window.verPreview = async (id) => {
              onclick="cambiarFoto(this, '${f}')">`).join('')
     : '';
 
-  // ✅ CARACTERÍSTICAS PRINCIPALES - Grid visible
   const specsHTML = `
     <div class="specs-grid-full">
       ${data.habitaciones ? `
@@ -210,7 +257,6 @@ window.verPreview = async (id) => {
     </div>
   `;
 
-  // ✅ INFORMACIÓN ADICIONAL
   const infoRowsHTML = `
     <div class="extra-info">
       <div class="info-row">
@@ -219,13 +265,12 @@ window.verPreview = async (id) => {
       </div>
       ${data.paga_administracion ? `
       <div class="info-row">
-        <span><i class="fas fa-file-invoice-dollar" style="color:var(--blue);margin-right:5px"></i>Administración</span>
+        <span><i class="fas fa-file-invoice-dollar" style="color:var(--gold);margin-right:5px"></i>Administración</span>
         <strong>${data.valor_administracion ? '$' + Number(data.valor_administracion).toLocaleString('es-CO') : 'Incluida'}</strong>
       </div>` : ''}
     </div>
   `;
 
-  // ✅ EXTRAS Y COMODIDADES - Tags visibles
   const extrasHTML = `
     <div class="tags-extras">
       ${data.conjunto_cerrado ? `
@@ -243,12 +288,10 @@ window.verPreview = async (id) => {
     </div>
   `;
 
-  // ✅ HTML COMPLETO DEL MODAL
   container.innerHTML = `
     <div class="dialog-container">
       <button onclick="document.getElementById('modalInmueble').close()" class="btn-cerrar">✕</button>
       <div class="dialog-grid">
-        <!-- Galería -->
         <div class="dialog-gallery">
           ${imgPrin
             ? `<img src="${imgPrin}" id="imgPrincipal" class="main-img" alt="${escapeHtml(data.titulo)}">`
@@ -257,16 +300,13 @@ window.verPreview = async (id) => {
           ${miniaturas ? `<div class="thumb-list">${miniaturas}</div>` : ''}
         </div>
         
-        <!-- Información -->
         <div class="dialog-info">
           <span class="badge-status">Disponible</span>
           <h2>${escapeHtml(data.titulo)}</h2>
           <p class="location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(ubicacion)}</p>
           <p class="price">$${Number(data.precio || 0).toLocaleString('es-CO')}</p>
           
-          <!-- CARACTERÍSTICAS - Esto es lo que faltaba -->
           ${specsHTML}
-          
           ${infoRowsHTML}
           ${extrasHTML}
           
@@ -287,13 +327,6 @@ window.verPreview = async (id) => {
   dialog.showModal();
 };
 
-// Función helper
-function escapeHtml(str) {
-  if (!str) return '';
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
 window.cambiarFoto = (thumb, src) => {
   const img = document.getElementById('imgPrincipal');
   if (!img) return;
@@ -304,10 +337,14 @@ window.cambiarFoto = (thumb, src) => {
 };
 
 // ══════════════════════════════════════════════════
-//  SCROLL ANIMATIONS
+//  SCROLL ANIMATIONS (con cleanup)
 // ══════════════════════════════════════════════════
 function initScrollAnimations() {
+  let observerActive = true;
+  
   const observer = new IntersectionObserver((entries) => {
+    if (!observerActive) return;
+    
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
@@ -318,15 +355,29 @@ function initScrollAnimations() {
 
   document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right')
     .forEach(el => observer.observe(el));
+  
+  // ✅ Guardar cleanup
+  cleanupFunctions.push(() => {
+    observerActive = false;
+    observer.disconnect();
+  });
 }
 
 // ══════════════════════════════════════════════════
-//  CONTADORES
+//  CONTADORES (con cleanup)
 // ══════════════════════════════════════════════════
 function initCounters() {
+  const counters = document.querySelectorAll('.counter');
+  if (counters.length === 0) return;
+  
+  let observerActive = true;
+  
   const observer = new IntersectionObserver((entries) => {
+    if (!observerActive) return;
+    
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
+      
       const el     = entry.target;
       const target = parseInt(el.dataset.target);
       const dur    = 1800;
@@ -336,7 +387,10 @@ function initCounters() {
 
       const timer = setInterval(() => {
         current += inc;
-        if (current >= target) { current = target; clearInterval(timer); }
+        if (current >= target) { 
+          current = target; 
+          clearInterval(timer); 
+        }
         el.textContent = Math.floor(current).toLocaleString('es-CO');
       }, step);
 
@@ -344,22 +398,35 @@ function initCounters() {
     });
   }, { threshold: 0.5 });
 
-  document.querySelectorAll('.counter').forEach(c => observer.observe(c));
+  counters.forEach(c => observer.observe(c));
+  
+  // ✅ Guardar cleanup
+  cleanupFunctions.push(() => {
+    observerActive = false;
+    observer.disconnect();
+  });
 }
 
 // ══════════════════════════════════════════════════
-//  NAV SCROLL
+//  NAV SCROLL (con cleanup)
 // ══════════════════════════════════════════════════
 function initNavScroll() {
   const nav = document.getElementById('mainNav');
   if (!nav) return;
+  
   const update = () => nav.classList.toggle('scrolled', window.scrollY > 60);
+  
   window.addEventListener('scroll', update, { passive: true });
   update();
+  
+  // ✅ Guardar cleanup
+  cleanupFunctions.push(() => {
+    window.removeEventListener('scroll', update);
+  });
 }
 
 // ══════════════════════════════════════════════════
-//  DOT NAV
+//  DOT NAV (con cleanup)
 // ══════════════════════════════════════════════════
 function initDotNav() {
   const dots     = document.querySelectorAll('.dot-nav .dot');
@@ -367,8 +434,12 @@ function initDotNav() {
     .map(id => document.getElementById(id)).filter(Boolean);
 
   if (!dots.length || !sections.length) return;
+  
+  let observerActive = true;
 
   const observer = new IntersectionObserver((entries) => {
+    if (!observerActive) return;
+    
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       dots.forEach(d => d.classList.toggle('active', d.getAttribute('href') === `#${entry.target.id}`));
@@ -376,6 +447,12 @@ function initDotNav() {
   }, { threshold: 0.4 });
 
   sections.forEach(s => observer.observe(s));
+  
+  // ✅ Guardar cleanup
+  cleanupFunctions.push(() => {
+    observerActive = false;
+    observer.disconnect();
+  });
 }
 
 // ── UTILIDAD ──────────────────────────────────────
