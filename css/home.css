@@ -930,3 +930,347 @@ body {
     font-size: 14px;
   }
 }
+
+/* ══════════════════════════════════════════════════
+   SECCIÓN CONSTRUCTORA — La más importante
+   ══════════════════════════════════════════════════ */
+
+.section-constructora {
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-constructora .parallax-bg {
+  background-image: url('https://images.unsplash.com/photo-1590725140246-20acdee442be?auto=format&fit=crop&w=1920&q=80');
+}
+
+.section-constructora .parallax-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(10,10,10,.92) 0%,
+    rgba(20,18,12,.88) 50%,
+    rgba(10,10,10,.92) 100%
+  );
+}
+
+.section-constructora .section-header {
+  margin-bottom: 48px;
+}
+
+.section-constructora .section-header h2 {
+  color: #fff;
+}
+
+.section-constructora .section-header h2 em {
+  color: var(--gold);
+}
+
+.section-constructora .section-header p {
+  color: rgba(255,255,255,.7);
+}
+
+/* Layout de 2 columnas */
+.constructora-flex {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .constructora-flex {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* Contenido izquierdo */
+.constructora-content h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(24px, 3.5vw, 34px);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+.constructora-content h3 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.constructora-content p {
+  font-size: 15px;
+  color: rgba(255,255,255,.75);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.constructora-content p strong {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+/* Mini-stats de construcción */
+.constructora-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+  padding: 20px;
+  background: rgba(212,175,55,.06);
+  border: 1px solid rgba(212,175,55,.2);
+  border-radius: var(--r-lg);
+}
+
+.c-stat {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.c-stat i {
+  font-size: 22px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.c-stat strong {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  color: #fff;
+  line-height: 1;
+}
+
+.c-stat span {
+  font-size: 11px;
+  color: rgba(255,255,255,.6);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+/* Servicios de construcción */
+.constructora-services {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.c-service {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(212,175,55,.15);
+  border-radius: var(--r-md);
+  transition: all var(--t);
+}
+
+.c-service:hover {
+  background: rgba(212,175,55,.08);
+  border-color: rgba(212,175,55,.35);
+  transform: translateX(4px);
+}
+
+.c-service i {
+  font-size: 20px;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.c-service h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.c-service p {
+  font-size: 13px;
+  color: rgba(255,255,255,.65);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Botón principal hacia constructora.html */
+.btn-constructora {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: var(--bg);
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--t) var(--ease);
+  box-shadow: 0 6px 24px rgba(212,175,55,.35);
+  letter-spacing: .3px;
+}
+
+.btn-constructora:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(212,175,55,.5);
+  filter: brightness(1.08);
+}
+
+.btn-constructora .fa-arrow-right {
+  font-size: 13px;
+  transition: transform var(--t);
+}
+
+.btn-constructora:hover .fa-arrow-right {
+  transform: translateX(4px);
+}
+
+/* Columna derecha: galería */
+.constructora-visual {
+  position: relative;
+}
+
+.c-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.c-img-main {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  border: 1px solid rgba(212,175,55,.2);
+}
+
+.c-img-main img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s var(--ease);
+}
+
+.c-img-main:hover img {
+  transform: scale(1.05);
+}
+
+.c-img-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(212,175,55,.95);
+  color: var(--bg);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+
+.c-img-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.c-img-small {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 1px solid rgba(212,175,55,.2);
+}
+
+.c-img-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s var(--ease);
+}
+
+.c-img-small:hover img {
+  transform: scale(1.08);
+}
+
+/* Sello de confianza */
+.c-trust {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(212,175,55,.06);
+  border: 1px solid rgba(212,175,55,.2);
+  border-radius: var(--r-md);
+}
+
+.c-trust-item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.c-trust-item i {
+  font-size: 20px;
+  color: var(--gold);
+}
+
+.c-trust-item span {
+  font-size: 11px;
+  color: rgba(255,255,255,.75);
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .constructora-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .c-stat {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    text-align: left;
+  }
+  
+  .c-stat i {
+    margin-bottom: 0;
+    font-size: 20px;
+  }
+  
+  .c-img-main img {
+    height: 240px;
+  }
+  
+  .c-trust {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  
+  .c-trust-item {
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .btn-constructora {
+    width: 100%;
+    justify-content: center;
+  }
+}
