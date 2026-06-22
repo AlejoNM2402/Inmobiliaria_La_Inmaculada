@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos - La Inmaculada Constructora</title>
+  <link rel="stylesheet" href="../css/constructora.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- NAV -->
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-container">
+    <a href="../index.html" class="logo">
+      <img src="../assets/logo.jpeg" alt="La Inmaculada">
+      <span>La Inmaculada</span>
+    </a>
+    <a href="../index.html" class="btn-volver">
+      <i class="fas fa-arrow-left"></i>
+      <span>Volver al inicio</span>
+    </a>
+  </div>
+</nav>
+  <!-- HEADER -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Nuestros <span class="highlight">Proyectos</span></h1>
+      <p>Conoce las obras que hemos construido con dedicación y calidad</p>
+    </div>
+  </section>
+
+  <!-- PROYECTOS GRID -->
+  <section class="proyectos-section">
+    <div class="container">
+      <div class="proyectos-grid" id="proyectosGrid">
+        <!-- Las tarjetas se generan con JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content" id="modalContent">
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-body" id="modalBody">
+        <!-- El contenido del modal se genera dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript externo -->
+  <script src="../js/constructora.js"></script>
+</body>
+</html>
